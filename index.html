@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>眼动追踪实验</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #experiment-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        #stimulus-image {
+            max-width: 100%;
+            max-height: 80vh;
+            border: 2px solid #ccc;
+            margin-bottom: 20px;
+        }
+        #start-button, #next-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        #start-button:hover, #next-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="intro-container">
+        <h1>眼动追踪实验</h1>
+        <p>欢迎参加眼动追踪实验。请按照说明进行操作，然后点击“开始”按钮开始实验。</p>
+        <button id="start-button">开始</button>
+    </div>
+    <div id="experiment-container">
+        <img id="stimulus-image" src="" alt="刺激图片">
+        <button id="next-button">下一步</button>
+    </div>
+
+    <script>
+        // 刺激图片数组
+        const images = [
+            'image1.jpg', // 第一张图片的路径
+            'image2.jpg', // 第二张图片的路径
+            'image3.jpg'  // 第三张图片的路径
+        ];
+
+        let currentImageIndex = 0;
+        let startTime, endTime;
+
+        // 开始按钮点击事件
+        document.getElementById('start-button').addEventListener('click', () => {
+            // 隐藏介绍部分，显示实验部分
+            document.getElementById('intro-container').style.display = 'none';
+            document.getElementById('experiment-container').style.display = 'flex';
+            showNextImage();
+        });
+
+        // 下一步按钮点击事件
+        document.getElementById('next-button').addEventListener('click', () => {
+            recordData();
+            if (currentImageIndex < images.length - 1) {
+                currentImageIndex++;
+                showNextImage();
+            } else {
+                endExperiment();
+            }
+        });
+
+        // 显示下一张图片
+        function showNextImage() {
+            document.getElementById('stimulus-image').src = images[currentImageIndex];
+            startTime = new Date().getTime();
+        }
+
+        // 记录数据
+        function recordData() {
+            endTime = new Date().getTime();
+            const duration = endTime - startTime;
+            console.log(`图片: ${images[currentImageIndex]}, 时长: ${duration} 毫秒`);
+            // 这里可以将数据发送到服务器或保存以便后续分析
+        }
+
+        // 结束实验
+        function endExperiment() {
+            alert('实验完成。感谢您的参与！');
+            // 重定向到感谢页面或显示实验完成消息
+        }
+    </script>
+</body>
+</html>
